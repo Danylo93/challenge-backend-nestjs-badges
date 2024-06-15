@@ -13,6 +13,7 @@ import {
 } from '@nestjs/common';
 import { BadgesService } from './badge.service';
 import { Badge } from '@prisma/client';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('badges')
 export class BadgeController {
@@ -48,6 +49,7 @@ export class BadgeController {
     return this.badgesService.create(createBadgeDto);
   }
 
+  @UseGuards(JwtAuthGuard) 
   @Post('redeem/:slug')
   async redeemBadge(
     @Param('slug') slug: string,

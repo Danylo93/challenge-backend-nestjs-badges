@@ -14,8 +14,5 @@
 
 [x] - Adicionar a capacidade de filtrar os emblemas pelo nome no endpoint de listagem de emblemas.
 
-==========================
 
-Corrigir :
 
-- Só é possivel resgatar emblema se estiver logado ( Corrijir o JWT)

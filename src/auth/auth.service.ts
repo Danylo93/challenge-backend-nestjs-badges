@@ -11,7 +11,6 @@ export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly usersService: UsersService,
-    private readonly prisma: PrismaService,
   ) {}
 
   async validateUser(username: string, password: string): Promise<any> {
