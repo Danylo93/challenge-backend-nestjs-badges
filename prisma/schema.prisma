@@ -1,0 +1,35 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id       Int         @id @default(autoincrement())
+  username String      @unique
+  password String
+  badges   UserBadge[]
+}
+
+model Badge {
+  id    Int         @id @default(autoincrement())
+  name  String
+  slug  String      @unique
+  image String // Certifique-se de que o campo 'image' está definido corretamente
+  users UserBadge[]
+}
+
+model UserBadge {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  badgeId    Int
+  redeemedAt DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badge Badge @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, badgeId])
+}
