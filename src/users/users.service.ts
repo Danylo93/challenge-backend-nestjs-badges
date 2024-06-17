@@ -1,5 +1,5 @@
 // src/users/users.service.ts
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
@@ -20,6 +20,11 @@ export class UsersService {
   }
 
   async create(data: { username: string; password: string }): Promise<User> {
+    
+    if (!data.username || !data.password) {
+      throw new BadRequestException('Usuário ou senha não podem ser vazios');
+    }
+    
     const hashedPassword = await bcrypt.hash(data.password, 10);
     return this.prisma.user.create({
       data: {

@@ -1,5 +1,5 @@
 // src/auth/auth.service.ts
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
@@ -14,6 +14,10 @@ export class AuthService {
   ) {}
 
   async validateUser(username: string, password: string): Promise<any> {
+    if (!username || !password) {
+      throw new BadRequestException('Usuario ou senha não podem ser vazios');
+    }
+
     const user = await this.usersService.findOneByUsername(username);
     if (user && (await bcrypt.compare(password, user.password))) {
       const { password, ...result } = user;
@@ -23,6 +27,10 @@ export class AuthService {
   }
 
   async login(user: User) {
+    if (!user) {
+      throw new BadRequestException('Usuario não pode ser vazio');
+    }
+
     const payload = { username: user.username, sub: user.id };
     return {
       access_token: this.jwtService.sign(payload),

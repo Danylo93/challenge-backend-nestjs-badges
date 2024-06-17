@@ -21,7 +21,6 @@ export class BadgesService {
     return this.prisma.badge.findUnique({ where: { slug } });
   }
 
-
   async create(data: {
     slug: string;
     name: string;
@@ -40,7 +39,7 @@ export class BadgesService {
       });
 
       if (!badge) {
-        throw new NotFoundException('Badge not found');
+        throw new NotFoundException('Emblema não existe');
       }
 
       const userBadge = await this.prisma.userBadge.findUnique({
@@ -53,7 +52,9 @@ export class BadgesService {
       });
 
       if (userBadge) {
-        throw new ConflictException('User already has this badge');
+        throw new ConflictException(
+          'Esse emblema já foi registrado por um usuário',
+        );
       }
 
       await this.prisma.userBadge.create({
@@ -63,7 +64,7 @@ export class BadgesService {
         },
       });
 
-      return { message: 'Badge redeemed successfully' };
+      return { message: 'Emblema resgatado com sucesso' };
     } catch (error) {
       if (
         error instanceof NotFoundException ||

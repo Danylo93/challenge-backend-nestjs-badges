@@ -14,12 +14,26 @@ import {
 import { BadgesService } from './badge.service';
 import { Badge } from '@prisma/client';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { CreateBadgeDto } from './dto/create-badge.dto';
+import { RedeemBadgeDto } from './dto/redeem-badge.dto';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 
+@ApiTags('badges')
 @Controller('badges')
 export class BadgeController {
   constructor(private readonly badgesService: BadgesService) {}
 
   @Get()
+  @ApiOperation({ summary: 'Listar todos os emblemas' })
+  @ApiResponse({
+    status: 200,
+    description: 'Recuperação bem-sucedida de emblemas',
+  })
   async findAll(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 10,
@@ -38,27 +52,41 @@ export class BadgeController {
   }
 
   @Post('create')
-  async create(
-    @Body()
-    createBadgeDto: {
-      slug: string;
-      name: string;
-      image: string;
-    },
-  ) {
+  @ApiOperation({ summary: 'Criar emblema' })
+  @ApiResponse({ status: 201, description: 'Emblema criado com sucesso' })
+  @ApiResponse({ status: 400, description: 'Dados inválidos' })
+  async create(@Body() createBadgeDto: CreateBadgeDto) {
     return this.badgesService.create(createBadgeDto);
   }
 
-  @UseGuards(JwtAuthGuard) 
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Post('redeem/:slug')
+  @ApiOperation({ summary: 'Resgatar Emblema' })
+  @ApiResponse({ status: 200, description: 'Emblema resgatado com sucesso' })
+  @ApiResponse({ status: 400, description: 'Dados Inválidos' })
+  @ApiResponse({ status: 404, description: 'Emblema não existe' })
+  @ApiResponse({
+    status: 409,
+    description: 'Emblema já registrado por outro usuário',
+  })
   async redeemBadge(
     @Param('slug') slug: string,
-    @Body('userId') userId: number,
+    @Body() redeemBadgeDto: RedeemBadgeDto,
   ): Promise<any> {
-    return this.badgesService.redeemBadge(userId, slug);
+    return this.badgesService.redeemBadge(redeemBadgeDto.userId, slug);
   }
 
   @Get('redeemed/:userId')
+  @ApiOperation({ summary: 'Listar emblema de um usuário' })
+  @ApiResponse({
+    status: 200,
+    description: 'Listar emblema de um usuário',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'O usuário não tem emblemas resgatados',
+  })
   async findRedeemedBadgesByUser(
     @Param('userId') userId: number,
   ): Promise<Badge[]> {
@@ -75,5 +103,4 @@ export class BadgeController {
       );
     }
   }
-
 }
