@@ -1,4 +1,3 @@
-// src/badge/dto/create-badge.dto.ts
 import { IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 

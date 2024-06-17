@@ -1,4 +1,3 @@
-// src/users/users.controller.ts
 import { Controller, Post, Body, BadRequestException } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthService } from '../auth/auth.service';
@@ -28,7 +27,6 @@ export class UsersController {
 
     const user: User = await this.usersService.create(data);
 
-    // Gerar e retornar o token JWT
     const token = await this.authService.login(user);
 
     return { user, token };

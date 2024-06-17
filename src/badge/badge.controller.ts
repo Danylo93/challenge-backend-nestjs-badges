@@ -1,4 +1,3 @@
-// src/badge/badge.controller.ts
 import {
   Controller,
   Get,

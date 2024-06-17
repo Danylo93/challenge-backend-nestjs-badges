@@ -1,4 +1,3 @@
-// src/badge/badge.module.ts
 import { Module } from '@nestjs/common';
 import { BadgeController } from './badge.controller';
 import { BadgesService } from './badge.service';

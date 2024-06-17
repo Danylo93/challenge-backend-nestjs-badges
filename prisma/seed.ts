@@ -1,4 +1,3 @@
-// prisma/seed.ts
 import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
@@ -14,7 +13,6 @@ async function main() {
     },
   });
 
-  // Adicione mais usuários se necessário
 }
 
 main()

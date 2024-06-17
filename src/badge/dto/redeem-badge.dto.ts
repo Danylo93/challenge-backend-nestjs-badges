@@ -1,4 +1,3 @@
-// src/badge/dto/redeem-badge.dto.ts
 import { IsNotEmpty, IsInt } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
