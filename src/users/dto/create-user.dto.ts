@@ -7,7 +7,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   username!: string;
 
-  @ApiProperty({ description: 'Insira uma senha' })
+  @ApiProperty({ description: 'Insira sua senha' })
   @IsNotEmpty()
   password!: string;
 }

@@ -10,6 +10,7 @@ import {
   HttpException,
   HttpStatus,
   NotFoundException,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { BadgesService } from './badge.service';
 import { Badge } from '@prisma/client';
@@ -87,8 +88,8 @@ export class BadgeController {
     status: 404,
     description: 'O usuário não tem emblemas resgatados',
   })
-  async findRedeemedBadgesByUser(
-    @Param('userId') userId: number,
+  async getRedeemedBadgesByUser(
+    @Param('userId', ParseIntPipe) userId: number,
   ): Promise<Badge[]> {
     try {
       const badges = await this.badgesService.findRedeemedBadgesByUser(userId);
@@ -103,4 +104,5 @@ export class BadgeController {
       );
     }
   }
+
 }

@@ -1,5 +1,3 @@
-// src/badge/badges.service.ts
-
 import {
   Injectable,
   InternalServerErrorException,
@@ -78,6 +76,8 @@ export class BadgesService {
 
   async findRedeemedBadgesByUser(userId: number): Promise<Badge[]> {
     try {
+      console.log(`Buscando emblemas para o usuário com ID: ${userId}`);
+
       const redeemedBadges = await this.prisma.userBadge.findMany({
         where: {
           userId,
@@ -88,14 +88,20 @@ export class BadgesService {
       });
 
       if (redeemedBadges.length === 0) {
+        console.log(
+          `Nenhum emblema encontrado para o usuário com ID: ${userId}`,
+        );
         throw new NotFoundException('Usuario sem emblemas registrados');
       }
 
       return redeemedBadges.map((ub) => ub.badge);
     } catch (error) {
+      console.error('Erro ao buscar emblemas:', error);
+
       if (error instanceof NotFoundException) {
         throw error;
       }
+
       throw new InternalServerErrorException(
         'Failed to retrieve redeemed badges',
       );

@@ -23,7 +23,7 @@ export class UsersController {
   @ApiResponse({ status: 400, description: 'Dados inválidos' })
   async create(@Body() data: CreateUserDto) {
     if (!data.username || !data.password) {
-      throw new BadRequestException('Username and password must not be empty');
+      throw new BadRequestException('Usuário ou senha não podem ser vazios');
     }
 
     const user: User = await this.usersService.create(data);

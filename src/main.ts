@@ -7,7 +7,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
-    .setTitle('Badge System')
+    .setTitle('Sistema de Emblemas')
     .setDescription('API for managing badges')
     .setVersion('1.0')
     .addTag('badges')
